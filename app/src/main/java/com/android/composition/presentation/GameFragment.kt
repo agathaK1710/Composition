@@ -58,7 +58,9 @@ class GameFragment : Fragment() {
     }
 
     private fun parseArguments() {
-        level = requireArguments().getSerializable(KEY_LEVEL) as Level
+        requireArguments().getParcelable<Level>(KEY_LEVEL)?.let {
+            level = it
+        }
     }
 
     override fun onDestroyView() {
@@ -74,7 +76,7 @@ class GameFragment : Fragment() {
             return GameFragment().apply {
                 arguments =
                     Bundle().apply {
-                        putSerializable(KEY_LEVEL, level)
+                        putParcelable(KEY_LEVEL, level)
                     }
             }
         }
