@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
+    <data>
+        <variable
+            name="gameViewModel"
+            type="com.android.composition.presentation.GameViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -18,10 +24,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="00:00" />
+            tools:text="@{gameViewModel.formattedTime}" />
 
         <TextView
             android:id="@+id/tv_sum"
+            app:numberAsString="@{gameViewModel.question.sum}"
             style="@style/QuestionTextStyle"
             android:layout_width="144dp"
             android:layout_height="144dp"
@@ -36,6 +43,7 @@
 
         <TextView
             android:id="@+id/tv_left_number"
+            app:numberAsString="@{gameViewModel.question.visibleNumber}"
             style="@style/QuestionTextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -63,6 +71,7 @@
 
         <TextView
             android:id="@+id/tv_option_1"
+            app:onOptionClickListener="@{(option) -> gameViewModel.chooseAnswer(option)}"
             style="@style/OptionTextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -71,10 +80,12 @@
             app:layout_constraintEnd_toStartOf="@id/tv_option_5"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="1" />
+            android:text="@{gameViewModel.question.options.get(0).toString()}"
+            tools:text="1"/>
 
         <TextView
             android:id="@+id/tv_option_2"
+            app:onOptionClickListener="@{(option) -> gameViewModel.chooseAnswer(option)}"
             style="@style/OptionTextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -82,7 +93,8 @@
             app:layout_constraintBottom_toTopOf="@id/tv_option_4"
             app:layout_constraintEnd_toStartOf="@id/tv_option_6"
             app:layout_constraintStart_toEndOf="@id/tv_option_4"
-            tools:text="2" />
+            android:text="@{gameViewModel.question.options.get(1).toString()}"
+            tools:text="2"/>
 
         <TextView
             android:id="@+id/tv_option_3"
@@ -93,10 +105,12 @@
             app:layout_constraintBottom_toTopOf="@id/tv_option_4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_option_5"
-            tools:text="3" />
+            android:text="@{gameViewModel.question.options.get(2).toString()}"
+            tools:text="3"/>
 
         <TextView
             android:id="@+id/tv_option_4"
+            app:onOptionClickListener="@{(option) -> gameViewModel.chooseAnswer(option)}"
             style="@style/OptionTextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -105,10 +119,12 @@
             app:layout_constraintEnd_toStartOf="@id/tv_option_5"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="4" />
+            android:text="@{gameViewModel.question.options.get(3).toString()}"
+            tools:text="4"/>
 
         <TextView
             android:id="@+id/tv_option_5"
+            app:onOptionClickListener="@{(option) -> gameViewModel.chooseAnswer(option)}"
             style="@style/OptionTextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -116,10 +132,12 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tv_option_6"
             app:layout_constraintStart_toEndOf="@id/tv_option_4"
-            tools:text="5" />
+            android:text="@{gameViewModel.question.options.get(4).toString()}"
+            tools:text="5"/>
 
         <TextView
             android:id="@+id/tv_option_6"
+            app:onOptionClickListener="@{(option) -> gameViewModel.chooseAnswer(option)}"
             style="@style/OptionTextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -127,14 +145,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_option_5"
-            tools:text="6" />
+            android:text="@{gameViewModel.question.options.get(5).toString()}"
+            tools:text="6"/>
 
         <TextView
             android:id="@+id/tv_answers_progress"
+            app:enoughCount="@{gameViewModel.enoughCount}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="@string/progress_answers"
+            android:text="@{gameViewModel.progressAnswers}"
             app:layout_constraintBottom_toTopOf="@id/progress_bar"
             app:layout_constraintTop_toBottomOf="@id/tv_left_number"
             app:layout_constraintVertical_chainStyle="spread" />
@@ -146,6 +166,9 @@
             android:layout_height="wrap_content"
             android:max="100"
             android:secondaryProgressTint="@android:color/background_dark"
+            app:enoughPercent="@{gameViewModel.enoughPercent}"
+            app:percentOfRightAnswers="@{gameViewModel.percentOfRightAnswers}"
+            app:minPercent="@{gameViewModel.minPercent}"
             app:layout_constraintBottom_toTopOf="@+id/tv_option_2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
